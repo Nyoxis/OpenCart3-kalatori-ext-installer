@@ -1,0 +1,19 @@
+name: Node.js CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+        env:
+          ADMIN_PASSWORD: ${{ secrets.admin_password }}
+      - run: npm ci
+      - run: node installer.js admin $ADMIN_PASSWORD polkadot-opencart3_2024-02-24_01-16.ocmod.zip
