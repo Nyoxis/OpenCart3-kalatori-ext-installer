@@ -16,4 +16,7 @@ jobs:
         env:
           ADMIN_PASSWORD: ${{ secrets.admin_password }}
       - run: npm ci
-      - run: node installer.js admin "$ADMIN_PASSWORD" polkadot-opencart3_2024-02-24_01-16.ocmod.zip
+      - name: Run installer
+        env:
+          ADMIN_PASSWORD: ${{ secrets.admin_password }}
+        run: node installer.js admin "$ADMIN_PASSWORD" polkadot-opencart3_2024-02-24_01-16.ocmod.zip
