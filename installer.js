@@ -8,8 +8,8 @@ function sleep (time) {
 
 
 (async () => {
-  if (process.argv.length != 5) {
-    console.log(`Usage: ${process.argv[0]} ${process.argv[1]} <username> <password> <file>`);
+  if (process.argv.length != 6) {
+    console.log(`Usage: ${process.argv[0]} ${process.argv[1]} <base url> <username> <password> <file>`);
     return;
   }
   
@@ -18,12 +18,12 @@ function sleep (time) {
   const page = await browser.newPage();
   
   // Navigate the page to a URL
-  await page.goto('https://kalatori-ci.exilancr.com/admin/index.php');
+  await page.goto(process.argv[2] + '/admin/index.php');
 
   // Set screen size
   await page.setViewport({width: 1080, height: 1024});
-  await page.type("#input-username", process.argv[2]);
-  await page.type("#input-password", process.argv[3]);
+  await page.type("#input-username", process.argv[3]);
+  await page.type("#input-password", process.argv[4]);
   await page.click("button[type=\"submit\"]");
 
 
@@ -35,13 +35,13 @@ function sleep (time) {
     paramsMap[param[0]] = param[1];
   });
   const userToken = paramsMap["user_token"];
-  await page.goto('https://kalatori-ci.exilancr.com/admin/index.php?route=marketplace/installer&user_token=' + userToken);
+  await page.goto(process.argv[2] + '/admin/index.php?route=marketplace/installer&user_token=' + userToken);
 
   const[fileChooser] = await Promise.all([
     page.waitForFileChooser(),
     page.click("button[id=\"button-upload\"]"),
   ])
-  await fileChooser.accept([process.argv[4]]);
+  await fileChooser.accept([process.argv[5]]);
   
 
   await sleep(2000);
